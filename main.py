@@ -1,11 +1,13 @@
 from os import path
 
 from flet_core import (
+    AlertDialog,
     Column,
     Dropdown,
     FilePicker,
     FilePickerResultEvent,
     FilledButton,
+    FilledTonalButton,
     Image,
     InputBorder,
     MainAxisAlignment,
@@ -15,6 +17,7 @@ from flet_core import (
     ScrollMode,
     SnackBar,
     Text,
+    TextAlign,
     TextField,
     TextThemeStyle,
     Theme,
@@ -169,6 +172,17 @@ def main(page: Page):
     get_directory_dialog = FilePicker(on_result=get_directory_result)
     page.overlay.extend([get_directory_dialog])
 
+    about_dialog = AlertDialog(title=Text("股票歷史價格", text_align=TextAlign.CENTER),
+                               content=Text("版本 23.9.0\n\n© 2023 鐘柏倫 (Cenlun Chung Po Lun)",
+                                            text_align=TextAlign.CENTER))
+
+    def toggle_about_dialog(e):
+        page.dialog = about_dialog
+        about_dialog.open = True
+        page.update()
+
+    about_button = FilledTonalButton("關於", on_click=toggle_about_dialog)
+
     page.add(
         Column(
             [
@@ -180,7 +194,7 @@ def main(page: Page):
                 end_date,
                 ResponsiveRow([end_year_input, end_month_select, end_day_select]),
                 frequency,
-                ResponsiveRow([output_to_excel_button])
+                ResponsiveRow([output_to_excel_button, about_button])
             ]
         )
     )
