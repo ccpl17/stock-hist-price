@@ -33,6 +33,9 @@ root = path.dirname(path.realpath(__file__))
 with open(f"{root}/assets/app-icon.txt", "r") as base64:
     app_icon = base64.readline()
 
+with open(f"{root}/assets/THIRDPARTYLICENSES", "r") as file:
+    third_party_licenses = file.read()
+
 
 def main(page: Page):
     page.window_center()
@@ -181,7 +184,17 @@ def main(page: Page):
         about_dialog.open = True
         page.update()
 
+    third_party_licenses_dialog = AlertDialog(title=Text("第三方授權條款", text_align=TextAlign.CENTER),
+                                              content=Column([Text(third_party_licenses)], scroll=ScrollMode.AUTO))
+
     about_button = FilledTonalButton("關於", on_click=toggle_about_dialog)
+
+    def toggle_third_party_licenses_dialog(e):
+        page.dialog = third_party_licenses_dialog
+        third_party_licenses_dialog.open = True
+        page.update()
+
+    third_party_licenses_button = FilledTonalButton("第三方授權條款", on_click=toggle_third_party_licenses_dialog)
 
     page.add(
         Column(
@@ -194,7 +207,7 @@ def main(page: Page):
                 end_date,
                 ResponsiveRow([end_year_input, end_month_select, end_day_select]),
                 frequency,
-                ResponsiveRow([output_to_excel_button, about_button])
+                ResponsiveRow([output_to_excel_button, about_button, third_party_licenses_button])
             ]
         )
     )
