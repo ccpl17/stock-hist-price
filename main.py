@@ -1,3 +1,4 @@
+import sys
 from os import path
 
 from flet_core import (
@@ -33,7 +34,7 @@ root = path.dirname(path.realpath(__file__))
 with open(f"{root}/assets/app-icon.txt", "r") as base64:
     app_icon = base64.readline()
 
-with open(f"{root}/assets/THIRDPARTYLICENSES", "r") as file:
+with open(f"{root}/assets/third-party-licenses/{sys.platform}/THIRDPARTYLICENSES", "r") as file:
     third_party_licenses = file.read()
 
 
