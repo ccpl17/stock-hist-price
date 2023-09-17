@@ -1,4 +1,7 @@
+import json
 import sys
+import urllib.request
+import webbrowser
 from os import path
 
 from flet_core import (
@@ -19,6 +22,7 @@ from flet_core import (
     SnackBar,
     Text,
     TextAlign,
+    TextButton,
     TextField,
     TextThemeStyle,
     Theme,
@@ -46,6 +50,38 @@ def main(page: Page):
     page.theme = Theme(color_scheme_seed="#7f0020")
     page.theme_mode = ThemeMode.SYSTEM
     page.scroll = ScrollMode.AUTO
+
+    current_version = "23.9.0"
+
+    endpoint = "https://gist.githubusercontent.com/ccpl17/be3362652dd53ad5f63962993b145a0e/raw/"
+
+    with urllib.request.urlopen(endpoint) as endpoint:
+        data = json.loads(endpoint.read().decode())
+        remote_version = data["version"]
+
+    def close_update_dialog(e):
+        update_dialog.open = False
+        page.update()
+
+    def release_page(e):
+        webbrowser.open("https://github.com/ccpl17/stock-historical-price/releases")
+        close_update_dialog(e)
+    
+    update_dialog = AlertDialog(
+        modal=True,
+        title=Text("有可用的更新"),
+        content=Text("你想要現在下載嗎"),
+        actions=[
+            TextButton("是",on_click=release_page),
+            TextButton("否",on_click=close_update_dialog)
+        ],
+        actions_alignment=MainAxisAlignment.END
+    )
+
+    if current_version < remote_version:
+        page.dialog = update_dialog
+        update_dialog.open = True
+        page.update()
 
     def start_date_change(e):
         try:
