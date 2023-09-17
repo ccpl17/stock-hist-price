@@ -212,6 +212,11 @@ def main(page: Page):
     get_directory_dialog = FilePicker(on_result=get_directory_result)
     page.overlay.extend([get_directory_dialog])
 
+    def open_website(e):
+        webbrowser.open("https://ccpl17.github.io/stock-historical-price/")
+    
+    open_website_button = FilledTonalButton("網站", on_click=open_website)
+
     about_dialog = AlertDialog(title=Text("股票歷史價格", text_align=TextAlign.CENTER),
                                content=Text("版本 23.9.0\n\n© 2023 鐘柏倫 (Cenlun Chung Po Lun)",
                                             text_align=TextAlign.CENTER))
@@ -244,7 +249,7 @@ def main(page: Page):
                 end_date,
                 ResponsiveRow([end_year_input, end_month_select, end_day_select]),
                 frequency,
-                ResponsiveRow([output_to_excel_button, about_button, third_party_licenses_button])
+                ResponsiveRow([output_to_excel_button, open_website_button, about_button, third_party_licenses_button])
             ]
         )
     )
