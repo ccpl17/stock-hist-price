@@ -31,8 +31,8 @@ from flet_core import (
 from flet_core.dropdown import Option
 from flet_runtime import app
 
-from lib.date import generate_days, generate_months, is_big_month, is_leap_year
-from lib.fetch import fetch_price
+from packages.date import generate_days, generate_months, is_big_month, is_leap_year
+from packages.fetch import fetch_price
 
 root = path.dirname(path.realpath(__file__))
 with open(f"{root}/assets/app-icon.txt", "r") as base64:
