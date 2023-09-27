@@ -8,4 +8,5 @@ def fetch_price(ticker, start_date, end_date, frequency, save_path):
         return 1
     else:
         dataframe.to_excel(f"{save_path}/{ticker}_Historical_Prices.xlsx")
+        dataframe.to_csv(f"{save_path}/{ticker}_Historical_Prices.csv")
         return 0

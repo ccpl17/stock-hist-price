@@ -51,7 +51,7 @@ def main(page: Page):
     page.theme_mode = ThemeMode.SYSTEM
     page.scroll = ScrollMode.AUTO
 
-    current_version = "23.9.0"
+    current_version = "23.9.1"
 
     endpoint = "https://gist.githubusercontent.com/ccpl17/be3362652dd53ad5f63962993b145a0e/raw/"
 
@@ -66,14 +66,14 @@ def main(page: Page):
     def release_page(e):
         webbrowser.open("https://github.com/ccpl17/stock-historical-price/releases")
         close_update_dialog(e)
-    
+
     update_dialog = AlertDialog(
         modal=True,
         title=Text("有可用的更新"),
         content=Text("你想要現在下載嗎"),
         actions=[
-            TextButton("是",on_click=release_page),
-            TextButton("否",on_click=close_update_dialog)
+            TextButton("是", on_click=release_page),
+            TextButton("否", on_click=close_update_dialog)
         ],
         actions_alignment=MainAxisAlignment.END
     )
@@ -214,11 +214,11 @@ def main(page: Page):
 
     def open_website(e):
         webbrowser.open("https://ccpl17.github.io/stock-historical-price/")
-    
+
     open_website_button = FilledTonalButton("網站", on_click=open_website)
 
     about_dialog = AlertDialog(title=Text("股票歷史價格", text_align=TextAlign.CENTER),
-                               content=Text("版本 23.9.0\n\n© 2023 鐘柏倫 (Cenlun Chung Po Lun)",
+                               content=Text(f"版本 {current_version}\n\n© 2023 鐘柏倫 (Cenlun Chung Po Lun)",
                                             text_align=TextAlign.CENTER))
 
     def toggle_about_dialog(e):
