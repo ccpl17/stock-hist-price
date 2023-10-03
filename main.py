@@ -6,6 +6,7 @@ from os import path
 
 from flet_core import (
     AlertDialog,
+    Checkbox,
     Column,
     Divider,
     FilePicker,
@@ -127,6 +128,7 @@ def main(page: Page):
     title = Row([Text("股票歷史價格", style=TextThemeStyle.HEADLINE_LARGE)], alignment=MainAxisAlignment.CENTER)
 
     ticker = Input("股票代號")
+    is_taiwan = Checkbox(label="台灣地區股票")
 
     start_date = Text("開始日期")
     start_year_input = Input(
@@ -190,11 +192,16 @@ def main(page: Page):
                 page.snack_bar = SnackBar(Text("請稍候"))
                 page.snack_bar.open = True
                 page.update()
-                code = fetch_price(ticker.value,
-                                   f"{start_year_input.value}-{start_month_select.value}-{start_day_select.value}",
-                                   f"{end_year_input.value}-{end_month_select.value}-{end_day_select.value}",
-                                   frequency.value,
-                                   e.path)
+                _ticker = ticker.value
+                if is_taiwan:
+                    _ticker += ".TW"
+                code = fetch_price(
+                    _ticker,
+                    f"{start_year_input.value}-{start_month_select.value}-{start_day_select.value}",
+                    f"{end_year_input.value}-{end_month_select.value}-{end_day_select.value}",
+                    frequency.value,
+                    e.path
+                )
                 if code == 0:
                     output_to_excel_button.disabled = False
                     page.snack_bar = SnackBar(Text("操作成功"))
@@ -250,6 +257,7 @@ def main(page: Page):
                 banner,
                 title,
                 ticker,
+                is_taiwan,
                 start_date,
                 ResponsiveRow([start_year_input, start_month_select, start_day_select]),
                 end_date,
