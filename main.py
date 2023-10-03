@@ -7,13 +7,10 @@ from os import path
 from flet_core import (
     AlertDialog,
     Column,
-    Dropdown,
+    Divider,
     FilePicker,
     FilePickerResultEvent,
-    FilledButton,
-    FilledTonalButton,
     Image,
-    InputBorder,
     MainAxisAlignment,
     Page,
     ResponsiveRow,
@@ -23,16 +20,16 @@ from flet_core import (
     Text,
     TextAlign,
     TextButton,
-    TextField,
     TextThemeStyle,
     Theme,
-    ThemeMode
+    ThemeMode,
 )
 from flet_core.dropdown import Option
 from flet_runtime import app
 
 from packages.date import generate_days, generate_months, is_big_month, is_leap_year
 from packages.fetch import fetch_price
+from packages.widgets import Button, Input, Select
 
 root = path.dirname(path.realpath(__file__))
 with open(f"{root}/assets/app-icon.txt", "r") as base64:
@@ -129,57 +126,62 @@ def main(page: Page):
     banner = Row([Image(src_base64=app_icon)], alignment=MainAxisAlignment.CENTER)
     title = Row([Text("股票歷史價格", style=TextThemeStyle.HEADLINE_LARGE)], alignment=MainAxisAlignment.CENTER)
 
-    ticker = TextField(label="股票代號", border=InputBorder.NONE, filled=True)
+    ticker = Input("股票代號")
 
     start_date = Text("開始日期")
-    start_year_input = TextField(col={"xs": 12, "sm": 4},
-                                 label="年",
-                                 max_length=4,
-                                 border=InputBorder.NONE,
-                                 filled=True,
-                                 on_change=start_date_change)
-    start_month_select = Dropdown(col={"xs": 12, "sm": 4},
-                                  label="月",
-                                  options=start_months,
-                                  border=InputBorder.NONE,
-                                  filled=True,
-                                  on_change=start_date_change)
-    start_day_select = Dropdown(col={"xs": 12, "sm": 4},
-                                label="日",
-                                options=[Option("日")],
-                                border=InputBorder.NONE,
-                                filled=True,
-                                on_change=start_date_change)
+    start_year_input = Input(
+        "年",
+        on_change=start_date_change,
+        col={"xs": 12, "sm": 4},
+        max_length=4
+    )
+    start_month_select = Select(
+        "月",
+        options=start_months,
+        on_change=start_date_change,
+        col={"xs": 12, "sm": 4}
+    )
+    start_day_select = Select(
+        "日",
+        options=[Option("日")],
+        on_change=start_date_change,
+        col={"xs": 12, "sm": 4}
+    )
 
     end_date = Text("結束日期")
-    end_year_input = TextField(col={"xs": 12, "sm": 4},
-                               label="年",
-                               max_length=4,
-                               border=InputBorder.NONE,
-                               filled=True,
-                               on_change=end_date_change)
-    end_month_select = Dropdown(col={"xs": 12, "sm": 4},
-                                label="月",
-                                options=end_months,
-                                border=InputBorder.NONE,
-                                filled=True,
-                                on_change=end_date_change)
-    end_day_select = Dropdown(col={"xs": 12, "sm": 4},
-                              label="日",
-                              options=[Option("日")],
-                              border=InputBorder.NONE,
-                              filled=True,
-                              on_change=end_date_change)
+    end_year_input = Input(
+        "年",
+        on_change=end_date_change,
+        col={"xs": 12, "sm": 4},
+        max_length=4
+    )
+    end_month_select = Select(
+        "月",
+        options=end_months,
+        on_change=end_date_change,
+        col={"xs": 12, "sm": 4}
+    )
+    end_day_select = Select(
+        "日",
+        options=[Option("日")],
+        on_change=end_date_change,
+        col={"xs": 12, "sm": 4}
+    )
 
-    frequency = Dropdown(label="資料頻率", options=[
-        Option(key="1d", text="每日"),
-        Option(key="1wk", text="每週"),
-        Option(key="1mo", text="每月")
-    ], border=InputBorder.NONE, filled=True)
+    frequency = Select(
+        "資料頻率",
+        options=[
+            Option(key="1d", text="每日"),
+            Option(key="1wk", text="每週"),
+            Option(key="1mo", text="每月")
+        ])
 
-    output_to_excel_button = FilledButton("輸出為 Excel 試算表",
-                                          on_click=lambda _: get_directory_dialog.get_directory_path(),
-                                          disabled=page.web)
+    output_to_excel_button = Button(
+        "輸出為 Excel 試算表",
+        colorful=True,
+        on_click=lambda _: get_directory_dialog.get_directory_path(),
+        disabled=page.web
+    )
 
     def get_directory_result(e: FilePickerResultEvent):
         try:
@@ -215,7 +217,7 @@ def main(page: Page):
     def open_website(e):
         webbrowser.open("https://ccpl17.github.io/stock-historical-price/")
 
-    open_website_button = FilledTonalButton("網站", on_click=open_website)
+    open_website_button = Button("網站", on_click=open_website, col={"xs": 12, "sm": 4})
 
     about_dialog = AlertDialog(title=Text("股票歷史價格", text_align=TextAlign.CENTER),
                                content=Text(f"版本 {current_version}\n\n© 2023 鐘柏倫 (Cenlun Chung Po Lun)",
@@ -229,14 +231,18 @@ def main(page: Page):
     third_party_licenses_dialog = AlertDialog(title=Text("第三方授權條款", text_align=TextAlign.CENTER),
                                               content=Column([Text(third_party_licenses)], scroll=ScrollMode.AUTO))
 
-    about_button = FilledTonalButton("關於", on_click=toggle_about_dialog)
+    about_button = Button("關於", on_click=toggle_about_dialog, col={"xs": 12, "sm": 4})
 
     def toggle_third_party_licenses_dialog(e):
         page.dialog = third_party_licenses_dialog
         third_party_licenses_dialog.open = True
         page.update()
 
-    third_party_licenses_button = FilledTonalButton("第三方授權條款", on_click=toggle_third_party_licenses_dialog)
+    third_party_licenses_button = Button(
+        "第三方授權條款",
+        on_click=toggle_third_party_licenses_dialog,
+        col={"xs": 12, "sm": 4}
+    )
 
     page.add(
         Column(
@@ -249,7 +255,9 @@ def main(page: Page):
                 end_date,
                 ResponsiveRow([end_year_input, end_month_select, end_day_select]),
                 frequency,
-                ResponsiveRow([output_to_excel_button, open_website_button, about_button, third_party_licenses_button])
+                ResponsiveRow([output_to_excel_button]),
+                Divider(),
+                ResponsiveRow([open_website_button, about_button, third_party_licenses_button])
             ]
         )
     )
