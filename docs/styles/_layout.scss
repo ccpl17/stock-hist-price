@@ -58,6 +58,7 @@ body {
 
 .footer-container {
   grid-row: 3/4;
+
   @media (min-width: 992px) {
     grid-column: 1/3;
   }

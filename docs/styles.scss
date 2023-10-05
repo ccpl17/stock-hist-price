@@ -1,0 +1,13 @@
+@import "styles/layout";
+@import "styles/utilities";
+@import "styles/colors";
+
+@import "widgets/soft-button";
+
+@import "components/profile";
+@import "components/copyright";
+
+.soft-button {
+  width: 100px;
+  height: 51px;
+}
