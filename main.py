@@ -50,7 +50,7 @@ def main(page: Page):
     page.theme_mode = ThemeMode.SYSTEM
     page.scroll = ScrollMode.AUTO
 
-    current_version = "23.10.1"
+    current_version = "23.11.0"
 
     endpoint = "https://gist.githubusercontent.com/ccpl17/be3362652dd53ad5f63962993b145a0e/raw/"
 

@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "stock-historical-price"
+version = "23.11.0"
+description = "股票歷史價格"
+authors = ["Cenlun Chung Po Lun <104301294+ccpl17@users.noreply.github.com>"]
+license = "GPL-3.0-only"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+flet = "0.9.0"
+openpyxl = "^3.1.2"
+yahooquery = "^2.3.3"
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
