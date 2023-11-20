@@ -30,6 +30,7 @@ from flet_runtime import app
 
 from src.packages import generate_days, generate_months, is_big_month, is_leap_year
 from src.packages import fetch_price
+from src.services import update_available
 from src.widgets import Button, Input, Select
 
 root = path.dirname(path.realpath(__file__))
@@ -49,7 +50,7 @@ def main(page: Page):
     page.theme_mode = ThemeMode.SYSTEM
     page.scroll = ScrollMode.AUTO
 
-    current_version = "23.10.0"
+    current_version = "23.10.1"
 
     endpoint = "https://gist.githubusercontent.com/ccpl17/be3362652dd53ad5f63962993b145a0e/raw/"
 
@@ -76,7 +77,7 @@ def main(page: Page):
         actions_alignment=MainAxisAlignment.END
     )
 
-    if current_version < remote_version:
+    if update_available(current_version, remote_version):
         page.dialog = update_dialog
         update_dialog.open = True
         page.update()
